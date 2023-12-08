@@ -34,6 +34,7 @@ time = 1
 dead_lock_counter = 0
 match = False
 key = True
+nopass = True
 
 while time <= 30:
 
@@ -46,7 +47,6 @@ while time <= 30:
 
         source_used = [queue[0][5], queue[1][5], queue[2][5]]
 
-        #SOURCE KULLANILMADYISA
         if match:
             if p_queue[0] == queue[j]:
                 key = True
@@ -55,7 +55,8 @@ while time <= 30:
             else:
                 key = False
 
-        if not source_used[j]:
+        #SOURCE KULLANILMADYISA
+        if (not source_used[j]) and (not queue[1] == 1):
             if key:
                 #VE SOURCE YETERLIYSE
                 if (queue[j][2] <= resources[0] and queue[j][3] <= resources[1] and queue[j][4] <= resources[2]):
@@ -66,12 +67,6 @@ while time <= 30:
 
                     queue[j][5] = True
                     queue[j][1] -= 1
-
-                    #1le doganlar icin cozum lazim
-                    # if queue[j][1] == 0:
-                    #     break
-
-
 
                 #VE SOURCE YETERLI DEGIL
                 else:
@@ -84,6 +79,7 @@ while time <= 30:
         else:
             if key:
                 #VE KALAN VAKTI 0'dan fazlaysa
+
                 if queue[j][1] > 0:
                     queue[j][1] -= 1
 
@@ -93,9 +89,10 @@ while time <= 30:
                     match = True
                     p_queue.append(queue[(j+1)%3])
 
-                    resources[0] += queue[j][2]
-                    resources[1] += queue[j][3]
-                    resources[2] += queue[j][4]
+                    if not nopass:
+                        resources[0] += queue[j][2]
+                        resources[1] += queue[j][3]
+                        resources[2] += queue[j][4]
 
                     #additioanl print needed, to show when duration is = 0
                     printer_func(time)
@@ -106,8 +103,10 @@ while time <= 30:
                                    random.randint(1, 7), random.randint(1, 7),
                                    random.randint(1, 7), False]
                     if new_process[1] == 1:
-                        print("essek oglu essek var arkadaslar!!!!!!!1")
-
+                        new_process[5] = True
+                        nopass = True
+                    else:
+                        nopass = False
 
                     queue.pop(j)
                     queue.append(new_process)
