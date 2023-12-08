@@ -5,7 +5,7 @@ def printer_func(time):
               ,queue[1][0],':',queue[1][1],','
               ,queue[2][0],':',queue[2][1],')',
               '***',
-              '(',resources[0], ',', resources[1], ',', resources[2], ')')
+              '(',resources[0], ',', resources[1], ',', resources[2], ')' + "----Recent Process: " + recent_process)
 
 
 
@@ -15,6 +15,8 @@ p_queue = []
 queue = [["P1", 4, 2, 3, 5, False],
          ["P2", 2, 3, 4, 2, False],
          ["P3", 6, 5, 3, 3, False]]
+
+recent_process = " "
 
 for process in queue:
     while True:
@@ -43,6 +45,7 @@ while time <= 30:
     for j in range(3):
 
         printer_func(time)
+        recent_process = " "
         time += 1
 
         source_used = [queue[0][5], queue[1][5], queue[2][5]]
@@ -68,6 +71,8 @@ while time <= 30:
                     queue[j][5] = True
                     queue[j][1] -= 1
 
+                    recent_process = queue[j][0]
+
                 #VE SOURCE YETERLI DEGIL
                 else:
                     dead_lock_counter += 1
@@ -78,8 +83,10 @@ while time <= 30:
         #SOURCE KULLANILDIYSA
         else:
             if key:
-                #VE KALAN VAKTI 0'dan fazlaysa
 
+                recent_process = queue[j][0]
+
+                #VE KALAN VAKTI 0'dan fazlaysa
                 if queue[j][1] > 0:
                     queue[j][1] -= 1
 
@@ -94,6 +101,7 @@ while time <= 30:
                         resources[1] += queue[j][3]
                         resources[2] += queue[j][4]
 
+
                     #additioanl print needed, to show when duration is = 0
                     printer_func(time)
                     time += 1
@@ -102,6 +110,8 @@ while time <= 30:
                     new_process = ["P" + str(totalProcessNumber), random.randint(1,7),
                                    random.randint(1, 7), random.randint(1, 7),
                                    random.randint(1, 7), False]
+
+                    recent_process = " "
                     if new_process[1] == 1:
                         new_process[5] = True
                         nopass = True
