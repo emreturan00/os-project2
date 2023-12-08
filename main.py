@@ -69,6 +69,9 @@ while time <= 30:
 
                     #1le doganlar icin cozum lazim
                     # if queue[j][1] == 0:
+                    #     break
+
+
 
                 #VE SOURCE YETERLI DEGIL
                 else:
@@ -94,13 +97,17 @@ while time <= 30:
                     resources[1] += queue[j][3]
                     resources[2] += queue[j][4]
 
+                    #additioanl print needed, to show when duration is = 0
                     printer_func(time)
                     time += 1
 
                     totalProcessNumber += 1
-                    new_process = ["P" + str(totalProcessNumber), random.randint(1,1),
+                    new_process = ["P" + str(totalProcessNumber), random.randint(1,7),
                                    random.randint(1, 7), random.randint(1, 7),
                                    random.randint(1, 7), False]
+                    if new_process[1] == 1:
+                        print("essek oglu essek var arkadaslar!!!!!!!1")
+
 
                     queue.pop(j)
                     queue.append(new_process)
